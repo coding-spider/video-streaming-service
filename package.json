@@ -1,0 +1,26 @@
+{
+  "name": "video-streaming-service",
+  "version": "1.0.0",
+  "description": "Simple Video Streaming Service",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "npx nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coding-spider/video-streaming-service.git"
+  },
+  "author": "Ro Han",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/coding-spider/video-streaming-service/issues"
+  },
+  "homepage": "https://github.com/coding-spider/video-streaming-service#readme",
+  "dependencies": {
+    "express": "4.17.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
