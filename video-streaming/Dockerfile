@@ -8,6 +8,6 @@ RUN npm install --only=production
 
 COPY src ./src
 
-COPY videos ./videos
+COPY ../video-storage/videos ./videos
 
 CMD npm start

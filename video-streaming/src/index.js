@@ -1,27 +1,36 @@
 
 const express = require("express");
-const fs = require("fs");
-const app = express();
-const path = require('path');
-const port = process.env.PORT || 3000;
+const http = require('http');
 
-app.get("/video", (req, res) => {
-    const file_path = path.resolve(__dirname, '../videos/video-1.mp4');
-    fs.stat(file_path, (err, stats) => {
-        if (err) {
-            console.error(err);
-            console.error("An error occurred");
-            res.sendStatus(500);
-            return;
-        }
-        res.writeHead(200, {
-            "Content-Length": stats.size,
-            "Content-Type": "video/mp4",
-        });
-        fs.createReadStream(file_path).pipe(res);
-    });
+const app = express();
+
+const APP_NAME = 'VIDEO-STREAMING';
+const PORT = parseInt(process.env.PORT);
+const VIDEO_STORAGE_HOST = process.env.VIDEO_STORAGE_HOST;
+const VIDEO_STORAGE_PORT = parseInt(process.env.VIDEO_STORAGE_PORT);
+
+app.use((req, res, next) => {
+    console.log(`API Request - ${APP_NAME} - ${req.url}`);
+    next();
 });
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}!`);
+app.get("/video", (req, res) => {
+    const forwardRequest = http.request(
+        {
+            host: VIDEO_STORAGE_HOST,
+            port: VIDEO_STORAGE_PORT,
+            path: '/video?path=video-1.mp4',
+            method: 'GET',
+            headers: req.headers,
+        },
+    forwardResponse => {
+            res.writeHeader(forwardResponse.statusCode, forwardResponse.headers);
+            forwardResponse.pipe(res);
+        });
+
+    req.pipe(forwardRequest);
+});
+
+app.listen(PORT, () => {
+    console.log(`${APP_NAME} app listening on port ${PORT}!`);
 });
