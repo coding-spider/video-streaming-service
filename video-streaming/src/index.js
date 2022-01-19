@@ -3,7 +3,7 @@ const express = require("express");
 const fs = require("fs");
 const app = express();
 const path = require('path');
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.get("/video", (req, res) => {
     const file_path = path.resolve(__dirname, '../videos/video-1.mp4');
